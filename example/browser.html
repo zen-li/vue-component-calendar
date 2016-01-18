@@ -1,0 +1,110 @@
+<!DOCTYPE HTML>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Vue-Component-Calendar</title>
+    <noscript>
+        <meta http-equiv="refresh" content="0; URL=http://m.meituan.com/?ndr">
+    </noscript>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no, address=no">
+    <meta name="description" content="每天团购一次，精品消费指南">
+    <meta name="keywords" content="美团，酒店，旅行，旅游">
+    <meta name="apple-touch-fullscreen" content="yes">
+    <link rel="dns-prefetch" href="//mc.meituan.net">
+    <link rel="dns-prefetch" href="//p0.meituan.net">
+    <link rel="dns-prefetch" href="//p1.meituan.net">
+    <link rel="icon" href="http://mc.meituan.net/touch/img/icon/favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon-precomposed" sizes="57x57" href="http://mc.meituan.net/touch/img/startup/apple-touch-icon-57x57-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="120x120" href="http://mc.meituan.net/touch/img/startup/apple-touch-icon-120x120-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="196x196" href="http://mc.meituan.net/touch/img/startup/apple-touch-icon-196x196-precomposed.png">
+    <link rel="apple-touch-startup-image" media="(device-height:568px)" href="http://mc.meituan.net/touch/img/startup/apple-touch-startup-image-640x1096.png">
+    <link rel="apple-touch-startup-image" media="(device-height:480px)" href="http://mc.meituan.net/touch/img/startup/apple-touch-startup-image-640x920.png">
+    <style>
+    body {
+        padding: 10px;
+    }
+    
+    button {
+        display: inline-block;
+        padding: 6px 12px;
+        margin-bottom: 0;
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 1.42857143;
+        text-align: center;
+        white-space: nowrap;
+        vertical-align: middle;
+        -ms-touch-action: manipulation;
+        touch-action: manipulation;
+        cursor: pointer;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        background-image: none;
+        border: 1px solid transparent;
+        border-radius: 4px;
+        border-radius: 3px;
+        background: #337ab7;
+        text-transform: none;
+        color: #fff;
+        background-color: #337ab7;
+        border-color: #2e6da4;
+        margin: 20px;
+    }
+    </style>
+    <script type="text/javascript" src="http://awp-assets.meituan.net/assets/vue/1.0.12/vue.min.js"></script>
+    <script src="../build/build.js"></script>
+    <script type="text/javascript">
+    (function() {
+        var isIPhone = window.navigator.appVersion.match(/iphone/gi);
+        var devicePixelRatio = window.devicePixelRatio;
+        var dpr = 1;
+        if (isIPhone) {
+            if (devicePixelRatio >= 3) {
+                dpr = 3;
+            } else if (devicePixelRatio >= 2) {
+                dpr = 2;
+            }
+        }
+        var scale = 1 / dpr;
+
+        var metaViewport = '<meta name="viewport" content="initial-scale=' + scale + ', maximum-scale=' + scale + ', minimum-scale=' + scale + ', user-scalable=no, width=device-width, shrink-to-fit=no" />';
+        document.write(metaViewport);
+
+        var docEl = document.documentElement;
+        var width = docEl.getBoundingClientRect().width;
+        if (width / dpr > 450) width = dpr * 450;
+        var rem = width / 6.4;
+        docEl.style.fontSize = rem + 'px';
+    })();
+    </script>
+</head>
+
+<body>
+    <div class="content">
+        <button @click.prevent="showCalendar=true">唤醒日历</button>
+        <calendar :show-calendar.sync="showCalendar" max-date=""></calendar>
+    </div>
+    <script type="text/javascript">
+    var ef = new Vue({
+        el: '.content',
+        data: {
+            showCalendar: true,
+        },
+        components: {
+            "calendar": vueComCalendar.calendar
+        },
+        methods: {
+            judge: function() {
+                this.$broadcast('judge');
+            }
+        }
+    });
+    </script>
+</body>
+
+</html>

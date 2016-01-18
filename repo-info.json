@@ -1,0 +1,20 @@
+{
+  "name": "@hfe/vue-component-calendar",
+  "desc": "vue-component-calendar",
+  "type": "hfe-generator",
+  "group": "h5",
+  "version": "0.1.0",
+  "author": {
+    "name": "maquan",
+    "email": "maquan@meituan.com"
+  },
+  "publishType": "h5",
+  "root": "./src",
+  "port": "8899",
+  "ssi": true,
+  "timestamp": 1451291363966,
+  "useCombo": false,
+  "toTest": [
+    "h5:prepub"
+  ]
+}
