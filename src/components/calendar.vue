@@ -19,13 +19,16 @@
                 </ul>
             </div>
             <div class="vue-calendar-date-wrapper">
-                
+                <div class="month-bar">2015年01月</div>
             </div>
 
         </div>
     </div>
 </template>
 <script>
+var utils = require('../lib/utils');
+
+
 export default {
     
     props: {
@@ -43,7 +46,7 @@ export default {
         isSameDate: Boolean,//是否允许开始日期和结束日期相同
     },
     data:{
-        date:date
+        
     },
     methods: {},
     events: {

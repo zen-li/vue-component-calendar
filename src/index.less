@@ -8,8 +8,19 @@
     z-index: 999;
 }
 
+.one-px-line() {
+    content: "";
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    border-bottom: 1px solid #c9c3b7;
+    -webkit-transform: scaleY(.5);
+    -webkit-transform-origin: 0 0;
+}
+
 .vue-calendar-content {
-    background: #f2f2f2;
+    background: #fff;
     position: absolute;
     bottom: 0;
     left: 0;
@@ -29,14 +40,7 @@
             float: right;
         }
         &:after {
-            content: "";
-            position: absolute;
-            bottom: 0px;
-            left: 0px;
-            right: 0px;
-            border-bottom: 1px solid #c9c3b7;
-            -webkit-transform: scaleY(.5);
-            -webkit-transform-origin: 0 0;
+            .one-px-line
         }
     }
     .week-bar {
@@ -44,14 +48,7 @@
         line-height: 0.6rem;
         position: relative;
         &:after {
-            content: "";
-            position: absolute;
-            bottom: 0px;
-            left: 0px;
-            right: 0px;
-            border-bottom: 1px solid #c9c3b7;
-            -webkit-transform: scaleY(.5);
-            -webkit-transform-origin: 0 0;
+            .one-px-line
         }
         ul {
             margin: 0;
@@ -63,6 +60,18 @@
                 -ms-flex: auto;
                 flex: auto;
                 list-style: none;
+            }
+        }
+    }
+    .vue-calendar-date-wrapper {
+        .month-bar {
+            text-align: center;
+            height: 0.6rem;
+            line-height: 0.6rem;
+            position: relative;
+            background: #fafafa;
+            &:after{
+                .one-px-line;
             }
         }
     }
