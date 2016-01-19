@@ -6,4 +6,5 @@ module.exports = {
 
 
 //声明全局filter
-Vue.filter('convertDateFormat', utils.filters().convertDateFormat);
+Vue.filter('convertDateFormatDisplay', utils.filters().convertDateFormatDisplay);
+Vue.filter('convertDateFormatValue', utils.filters().convertDateFormatValue);

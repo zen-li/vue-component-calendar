@@ -18,11 +18,18 @@ module.exports = {
 		var self = this;
 		return {
 			//处理日期
-			convertDateFormat: function (date) {
+			convertDateFormatDisplay: function (date) {
 				// console.log(self.dateFormat('yyyy-MM-dd',date))
 				if (date != '') {
 					return self.getVicationName(date);
 					// return 
+				} else {
+					return '';
+				}
+			},
+			convertDateFormatValue: function (date) {
+				if (date != '') {
+					return self.dateFormat('yyyy-MM-dd', date);
 				} else {
 					return '';
 				}

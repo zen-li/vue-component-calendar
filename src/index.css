@@ -132,8 +132,9 @@ li {
   width: 14.286%;
   text-align: center;
   position: relative;
-  height: 1.04rem;
-  line-height: 1.04rem;
+  height: 1rem;
+  line-height: 1rem;
+  color: #333333;
 }
 .vue-calendar-content .vue-calendar-date-wrapper .month-list li:after {
   content: "";
@@ -144,6 +145,9 @@ li {
   border-bottom: 1px solid #c9c3b7;
   -webkit-transform: scaleY(0.5);
   -webkit-transform-origin: 0 0;
+}
+.vue-calendar-content .vue-calendar-date-wrapper .month-list li.selected {
+  color: #fff;
 }
 .vue-component-calendar-content-transition {
   transition: all ease-in-out 0.3s;

@@ -25,7 +25,7 @@
                     <div class="month-bar" v-bind:class="{'first-month-bar':index==0}">{{item.month}}</div>
                     <div class="month-list" v-bind:class="{'first-day-panel':index==0}">
                         <ul>
-                            <li @click.prevent="selectedFunc" v-for="day in item.days">{{day | convertDateFormat}}</li>
+                            <li @click.prevent="selectedFunc" v-for="day in item.days" v-bind:class="{'selected':isSelected == '{{day | convertDateFormatValue}}' }" data-value="{{day | convertDateFormatValue}}" >{{day | convertDateFormatDisplay}}</li>
                         </ul>
                     </div>
                 </div>
@@ -61,8 +61,8 @@ export default {
         scrollFunction: function(event) {
 
         },
-        selectedFunc: function() {
-
+        selectedFunc: function(event) {
+            this.isSelected = event.currentTarget.getAttribute('data-value');
         }
     },
     events: {
