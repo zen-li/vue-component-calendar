@@ -19,9 +19,9 @@
                 </ul>
             </div>
             <div class="vue-calendar-date-wrapper" id="scrollPanel">
-                <div v-for="(index,item) in panel" class="v-c-c-m" v-on:click="Func">
-                    <div class="month-bar">{{item.month}}</div>
-                    <div class="month-list" v-on="scroll:Func">
+                <div v-for="(index,item) in panel">
+                    <div class="month-bar" v-bind:class="{'first-month-bar':index==0}">{{item.month}}</div>
+                    <div class="month-list">
                         <ul>
                             <li v-for="day in item.days">{{day | convertDateFormat}}</li>
                         </ul>
@@ -55,13 +55,16 @@ export default {
         }
     },
     methods: {
-        Func: function() {
-            console.log(1)
-        }
+
     },
     events: {},
     ready() {
-        events.init();
+        var CAL = {
+            init: function() {
+                events().init(); //事件初始化
+            }
+        }
+        CAL.init();
     }
 }
 </script>
