@@ -87,7 +87,7 @@
 <body>
     <div class="content">
         <button @click.prevent="showCalendar=true">唤醒日历</button>
-        <calendar :show-calendar.sync="showCalendar" max-date=""></calendar>
+        <calendar :show-calendar.sync="showCalendar" max-date="25m"></calendar>
     </div>
     <script type="text/javascript">
     var ef = new Vue({
@@ -99,9 +99,6 @@
             "calendar": vueComCalendar.calendar
         },
         methods: {
-            judge: function() {
-                this.$broadcast('judge');
-            }
         }
     });
     </script>

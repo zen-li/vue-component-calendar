@@ -19,34 +19,39 @@
                 </ul>
             </div>
             <div class="vue-calendar-date-wrapper">
-                <div class="month-bar">2015年01月</div>
+                <div class="month-bar">{{panel()}}</div>
+                <div class="month-list">
+                    <ul>
+                        <li v-for="item in months">{{item | convertDateFormat}}</li>
+                    </ul>
+                </div>
             </div>
-
         </div>
     </div>
 </template>
 <script>
 var utils = require('../lib/utils');
 
-
 export default {
-    
     props: {
         showCalendar: {
             type: Boolean,
             default: false,
             twoWay: true
         },
-        maxDate: String,//允许操作的最大日期
-        minDate: String,//允许操作的最小日期
-        startDate: String,//开始日期
-        endDate: String,//结束日期
-        isHoliday: Boolean,//是否显示节日名称
-        isVacation: Boolean,//是否显示假期提醒
-        isSameDate: Boolean,//是否允许开始日期和结束日期相同
+        maxDate: String, //允许操作的最大日期
+        startDate: String, //开始日期
+        endDate: String, //结束日期
+        isHoliday: Boolean, //是否显示节日名称
+        isVacation: Boolean, //是否显示假期提醒
+        isSameDate: Boolean, //是否允许开始日期和结束日期相同
     },
-    data:{
-        
+    data() {
+        console.log(this.maxDate)
+        return {
+            months: utils.getCurrentMonthTableData(),
+            panel:utils.getAllPanelData(this.maxDate)
+        }
     },
     methods: {},
     events: {

@@ -1,3 +1,13 @@
+/*
+ * base css
+ */
+
+ul,
+li {
+    margin: 0;
+    padding: 0;
+}
+
 .vue-calendar-backdrop {
     position: absolute;
     width: 100%;
@@ -51,7 +61,6 @@
             .one-px-line
         }
         ul {
-            margin: 0;
             display: -webkit-flex;
             display: -ms-flexbox;
             display: flex;
@@ -60,6 +69,7 @@
                 -ms-flex: auto;
                 flex: auto;
                 list-style: none;
+                text-align: center;
             }
         }
     }
@@ -70,8 +80,27 @@
             line-height: 0.6rem;
             position: relative;
             background: #fafafa;
-            &:after{
+            &:after {
                 .one-px-line;
+            }
+        }
+        .month-list {
+            ul li {
+                list-style: none;
+            }
+            ul {
+                overflow: hidden;
+            }
+            li {
+                float: left;
+                width: 14.286%;
+                text-align: center;
+                position: relative;
+                height: 1.04rem;
+                line-height: 1.04rem;
+                &:after {
+                    .one-px-line;
+                }
             }
         }
     }

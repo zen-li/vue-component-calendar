@@ -1,3 +1,11 @@
+/*
+ * base css
+ */
+ul,
+li {
+  margin: 0;
+  padding: 0;
+}
 .vue-calendar-backdrop {
   position: absolute;
   width: 100%;
@@ -55,7 +63,6 @@
   -webkit-transform-origin: 0 0;
 }
 .vue-calendar-content .week-bar ul {
-  margin: 0;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
@@ -65,6 +72,7 @@
   -ms-flex: auto;
   flex: auto;
   list-style: none;
+  text-align: center;
 }
 .vue-calendar-content .vue-calendar-date-wrapper .month-bar {
   text-align: center;
@@ -74,6 +82,30 @@
   background: #fafafa;
 }
 .vue-calendar-content .vue-calendar-date-wrapper .month-bar:after {
+  content: "";
+  position: absolute;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
+  border-bottom: 1px solid #c9c3b7;
+  -webkit-transform: scaleY(0.5);
+  -webkit-transform-origin: 0 0;
+}
+.vue-calendar-content .vue-calendar-date-wrapper .month-list ul li {
+  list-style: none;
+}
+.vue-calendar-content .vue-calendar-date-wrapper .month-list ul {
+  overflow: hidden;
+}
+.vue-calendar-content .vue-calendar-date-wrapper .month-list li {
+  float: left;
+  width: 14.286%;
+  text-align: center;
+  position: relative;
+  height: 1.04rem;
+  line-height: 1.04rem;
+}
+.vue-calendar-content .vue-calendar-date-wrapper .month-list li:after {
   content: "";
   position: absolute;
   bottom: 0px;
