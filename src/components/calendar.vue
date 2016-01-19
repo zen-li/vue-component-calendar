@@ -18,12 +18,14 @@
                     <li>六</li>
                 </ul>
             </div>
-            <div class="vue-calendar-date-wrapper">
-                <div class="month-bar">{{panel()}}</div>
-                <div class="month-list">
-                    <ul>
-                        <li v-for="item in months">{{item | convertDateFormat}}</li>
-                    </ul>
+            <div class="vue-calendar-date-wrapper" id="scrollPanel">
+                <div v-for="(index,item) in panel" class="v-c-c-m" v-on:click="Func">
+                    <div class="month-bar">{{item.month}}</div>
+                    <div class="month-list" v-on="scroll:Func">
+                        <ul>
+                            <li v-for="day in item.days">{{day | convertDateFormat}}</li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
@@ -31,7 +33,7 @@
 </template>
 <script>
 var utils = require('../lib/utils');
-
+var events = require('../lib/events');
 export default {
     props: {
         showCalendar: {
@@ -47,15 +49,19 @@ export default {
         isSameDate: Boolean, //是否允许开始日期和结束日期相同
     },
     data() {
-        console.log(this.maxDate)
         return {
             months: utils.getCurrentMonthTableData(),
-            panel:utils.getAllPanelData(this.maxDate)
+            panel: utils.getAllPanelData(this.maxDate)
         }
     },
-    methods: {},
-    events: {
-
+    methods: {
+        Func: function() {
+            console.log(1)
+        }
+    },
+    events: {},
+    ready() {
+        events.init();
     }
 }
 </script>

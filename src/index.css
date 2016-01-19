@@ -74,12 +74,28 @@ li {
   list-style: none;
   text-align: center;
 }
+.vue-calendar-content .vue-calendar-date-wrapper {
+  overflow: auto;
+  height: 600px;
+}
 .vue-calendar-content .vue-calendar-date-wrapper .month-bar {
   text-align: center;
   height: 0.6rem;
   line-height: 0.6rem;
+  width: 100%;
   position: relative;
   background: #fafafa;
+  margin-top: -1px;
+}
+.vue-calendar-content .vue-calendar-date-wrapper .month-bar:before {
+  content: "";
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  border-bottom: 1px solid #c9c3b7;
+  -webkit-transform: scaleY(0.5);
+  -webkit-transform-origin: 0 0;
 }
 .vue-calendar-content .vue-calendar-date-wrapper .month-bar:after {
   content: "";

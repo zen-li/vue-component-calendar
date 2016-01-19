@@ -55,6 +55,7 @@ module.exports = {
 			firstDay = new Date(year, month, 1),
 			firstCell = firstDay.getDay() === 0 ? 7 : firstDay.getDay(),
 			bottomCell = 35 - currentDays - firstCell;
+
 		//前一个月该显示多少天
 		var preMonth = [];
 		for (var p = firstCell; p > 0; p--) {
@@ -106,21 +107,29 @@ module.exports = {
 				for (var i = 0; i < months; i++) {
 					var thisMonth = self.getThisMonth() + i;
 					var thisYear = self.getThisYear();
-					// if (thisMonth > 12) {
-						thisYear = thisYear + Math.floor(thisMonth/12);
-						thisMonth = thisMonth - 12 * Math.floor(thisMonth/12) + 1;
-					// }
+					var num = 0;
+					if (thisMonth > 12 && thisMonth <= 24) {
+						num = 1;
+					} else if (thisMonth > 24 && thisMonth <= 36) {
+						num = 2;
+					} else if (thisMonth > 36 && thisMonth <= 48) {
+						num = 3;
+					} else if (thisMonth > 48) {
+						self.consoleError('Vue Component Calendar Error: maxDate parameter error, maxDate max\'s value is 48m');
+					}
+					thisYear = thisYear + num;
+					thisMonth = thisMonth - 12 * num
 
 					all.push({
 						month: thisYear + '年' + thisMonth + '月',
-						days: self.getCurrentMonthTableData(new Date(thisYear, thisMonth, 1))
+						days: self.getCurrentMonthTableData(new Date(thisYear, thisMonth - 1, 1))
 					})
 				}
-				console.log(all)
-
 			} else {
 				self.consoleError('Vue Component Calendar Error: maxDate parameter error')
 			}
+			console.log(all)
+			return all;
 
 		}
 

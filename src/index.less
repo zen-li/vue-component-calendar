@@ -28,6 +28,16 @@ li {
     -webkit-transform: scaleY(.5);
     -webkit-transform-origin: 0 0;
 }
+.one-px-line-top(){
+    content: "";
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    border-bottom: 1px solid #c9c3b7;
+    -webkit-transform: scaleY(.5);
+    -webkit-transform-origin: 0 0;
+}
 
 .vue-calendar-content {
     background: #fff;
@@ -57,6 +67,7 @@ li {
         height: 0.6rem;
         line-height: 0.6rem;
         position: relative;
+
         &:after {
             .one-px-line
         }
@@ -74,12 +85,24 @@ li {
         }
     }
     .vue-calendar-date-wrapper {
+        overflow: auto;
+        height: 600px;
+        // margin-top: 60px;
+        // .v-c-c-m:nth-child(1){
+        //     position: fixed;
+        //     margin-top: -61px;
+        // }
         .month-bar {
             text-align: center;
             height: 0.6rem;
             line-height: 0.6rem;
+            width: 100%;
             position: relative;
             background: #fafafa;
+            margin-top: -1px;
+            &:before {
+                .one-px-line-top;
+            }
             &:after {
                 .one-px-line;
             }
