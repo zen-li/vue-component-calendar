@@ -1,29 +1,31 @@
 <style src="../index.css"></style>
 <template>
-    <div class="vue-calendar">
+    <div class="vue-calendar" data-index="0">
         <div class="vue-calendar-backdrop" v-show="showCalendar" @click.prevent="showCalendar=false"></div>
         <div class="vue-calendar-content" v-show="showCalendar" transition="vue-component-calendar-content">
             <div class="vue-calendar-content-title-wrapper">
                 <div class="text">选择入离日期</div>
-                <a href="javascript:;" @click.prevent="showCalendar=false">完成</a>
+                <div class="btn">
+                    <a href="javascript:;" @click.prevent="showCalendar=false">完成</a>
+                </div>
             </div>
             <div class="week-bar">
                 <ul>
-                    <li>日</li>
+                    <li class="weekend">日</li>
                     <li>一</li>
                     <li>二</li>
                     <li>三</li>
                     <li>四</li>
                     <li>五</li>
-                    <li>六</li>
+                    <li class="weekend">六</li>
                 </ul>
             </div>
-            <div class="vue-calendar-date-wrapper" id="scrollPanel">
-                <div v-for="(index,item) in panel">
+            <div class="vue-calendar-date-wrapper" id="scrollPanel" @scroll="scrollFunction">
+                <div v-for="(index,item) in panel" data-index="{{index}}">
                     <div class="month-bar" v-bind:class="{'first-month-bar':index==0}">{{item.month}}</div>
-                    <div class="month-list">
+                    <div class="month-list" v-bind:class="{'first-day-panel':index==0}">
                         <ul>
-                            <li v-for="day in item.days">{{day | convertDateFormat}}</li>
+                            <li @click.prevent="selectedFunc" v-for="day in item.days">{{day | convertDateFormat}}</li>
                         </ul>
                     </div>
                 </div>
@@ -33,7 +35,7 @@
 </template>
 <script>
 var utils = require('../lib/utils');
-var events = require('../lib/events');
+// var events = require('../lib/events');
 export default {
     props: {
         showCalendar: {
@@ -51,17 +53,25 @@ export default {
     data() {
         return {
             months: utils.getCurrentMonthTableData(),
-            panel: utils.getAllPanelData(this.maxDate)
+            panel: utils.getAllPanelData(this.maxDate),
+            isSelected: false
         }
     },
     methods: {
+        scrollFunction: function(event) {
+
+        },
+        selectedFunc: function() {
+
+        }
+    },
+    events: {
 
     },
-    events: {},
     ready() {
         var CAL = {
             init: function() {
-                events().init(); //事件初始化
+                // events().init(); //事件初始化
             }
         }
         CAL.init();

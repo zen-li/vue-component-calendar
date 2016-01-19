@@ -33,9 +33,21 @@ li {
 }
 .vue-calendar-content .vue-calendar-content-title-wrapper .text {
   float: left;
+  padding-left: 0.2rem;
+  color: #666666;
+  font-size: .32rem;
 }
-.vue-calendar-content .vue-calendar-content-title-wrapper a {
+.vue-calendar-content .vue-calendar-content-title-wrapper .btn {
   float: right;
+  margin-right: 0.2rem;
+}
+.vue-calendar-content .vue-calendar-content-title-wrapper .btn a {
+  color: #2eb6a8;
+  font-size: .30rem;
+  text-decoration: none;
+  padding: 0.1rem 0.20rem;
+  border: 0.02rem solid #2eb6a8;
+  border-radius: 0.06rem;
 }
 .vue-calendar-content .vue-calendar-content-title-wrapper:after {
   content: "";
@@ -52,15 +64,8 @@ li {
   line-height: 0.6rem;
   position: relative;
 }
-.vue-calendar-content .week-bar:after {
-  content: "";
-  position: absolute;
-  bottom: 0px;
-  left: 0px;
-  right: 0px;
-  border-bottom: 1px solid #c9c3b7;
-  -webkit-transform: scaleY(0.5);
-  -webkit-transform-origin: 0 0;
+.vue-calendar-content .week-bar .weekend {
+  color: #fa967f;
 }
 .vue-calendar-content .week-bar ul {
   display: -webkit-flex;
@@ -68,6 +73,7 @@ li {
   display: flex;
 }
 .vue-calendar-content .week-bar ul li {
+  color: #666666;
   -webkit-flex: auto;
   -ms-flex: auto;
   flex: auto;
@@ -75,8 +81,16 @@ li {
   text-align: center;
 }
 .vue-calendar-content .vue-calendar-date-wrapper {
+  height: 100%;
   overflow: auto;
-  height: 600px;
+}
+.vue-calendar-content .vue-calendar-date-wrapper .first-month-bar {
+  position: fixed!important;
+  top: 1.5rem !important;
+  z-index: 1000;
+}
+.vue-calendar-content .vue-calendar-date-wrapper .first-day-panel {
+  margin-top: 0.6rem;
 }
 .vue-calendar-content .vue-calendar-date-wrapper .month-bar {
   text-align: center;
@@ -85,7 +99,7 @@ li {
   width: 100%;
   position: relative;
   background: #fafafa;
-  margin-top: -1px;
+  margin-top: -0.01rem;
 }
 .vue-calendar-content .vue-calendar-date-wrapper .month-bar:before {
   content: "";

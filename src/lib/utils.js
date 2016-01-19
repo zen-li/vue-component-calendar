@@ -1,14 +1,35 @@
+var vication = require('./config').vication;
+var allVications = [];
+//处理所有的日期数据
+(function handleVication() {
+	for (var i in vication) {
+		var item = vication[i]
+		var d = item.dates;
+		for (var j in d) {
+			allVications.push(d[j]);
+		}
+	}
+})()
+
+
+
 module.exports = {
-	filters: {
-		//处理日期
-		convertDateFormat: function (date) {
-			if (date != '') {
-				return new Date(date).getDate()
-			} else {
-				return '';
+	filters: function () {
+		var self = this;
+		return {
+			//处理日期
+			convertDateFormat: function (date) {
+				// console.log(self.dateFormat('yyyy-MM-dd',date))
+				if (date != '') {
+					return self.getVicationName(date);
+					// return 
+				} else {
+					return '';
+				}
 			}
 		}
 	},
+
 	/**
 	 * 判断闰年
 	 * @param  {Number}  year 需要判断的年份
@@ -128,13 +149,73 @@ module.exports = {
 			} else {
 				self.consoleError('Vue Component Calendar Error: maxDate parameter error')
 			}
-			console.log(all)
 			return all;
 
 		}
 
 	},
 	consoleError: function (msg) {
-		console.error(msg);
+		window.console && console.error(msg);
+	},
+	/**
+	 * demo:yyyy-MM-dd hh:mm:ss.S
+	 * @param  {[type]} fmt  [description]
+	 * @param  {[type]} date [description]
+	 * @return {[type]}      [description]
+	 */
+	dateFormat: function (fmt, date) {
+		var thisDate = date || new Date();
+		var o = {
+			"M+": thisDate.getMonth() + 1, //月份 
+			"d+": thisDate.getDate(), //日 
+			"h+": thisDate.getHours(), //小时 
+			"m+": thisDate.getMinutes(), //分 
+			"s+": thisDate.getSeconds(), //秒 
+			"q+": Math.floor((thisDate.getMonth() + 3) / 3), //季度 
+			"S": thisDate.getMilliseconds() //毫秒 
+		};
+		if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (thisDate.getFullYear() + "").substr(4 - RegExp.$1.length));
+		for (var k in o)
+			if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+		return fmt;
+	},
+
+	inArray: function (elem, arr, i) {
+		var len;
+		if (arr) {
+			len = arr.length;
+			i = i ? i < 0 ? Math.max(0, len + i) : i : 0;
+
+			for (; i < len; i++) {
+				// Skip accessing in sparse arrays
+				if (i in arr && arr[i] === elem) {
+					return i;
+				}
+			}
+		}
+		return -1;
+	},
+
+	//获取假期名称
+	getVicationName: function (date) {
+		var self = this;
+		var dt = this.dateFormat('yyyy-MM-dd', date);
+		var isInVication = this.inArray(dt, allVications)
+		if (isInVication > -1) {
+			return self.showNameWithDate(dt);
+		} else {
+			return new Date(date).getDate();
+		}
+
+	},
+	//根据日期获取假期名字
+	showNameWithDate: function (date) {
+		for (var i in vication) {
+			for (var j in vication[i].dates) {
+				if (vication[i]["dates"][j] == date) {
+					return vication[i].name;
+				}
+			}
+		}
 	}
 }
