@@ -1,5 +1,10 @@
-var vication = require('./config').vication;
+var config = require('./config');
+var vication = config.vication;
+var holiday = config.holiday;
+var work = config.work;
 var allVications = [];
+var allHolidays = [];
+var allWorks = [];
 //处理所有的日期数据
 (function handleVication() {
 	for (var i in vication) {
@@ -8,6 +13,13 @@ var allVications = [];
 		for (var j in d) {
 			allVications.push(d[j]);
 		}
+	}
+
+	for (var m in holiday) {
+		allHolidays.push(m);
+	}
+	for (var n in work) {
+		allWorks.push(n);
 	}
 })()
 module.exports = {
@@ -31,7 +43,22 @@ module.exports = {
 			}
 		}
 	},
-
+	judgeIsHoliday: function (day) {
+		var date = this.dateFormat('yyyy-MM-dd',new Date(day));
+		if (this.inArray(date, allHolidays) > -1) {
+			return true;
+		} else {
+			return false;
+		}
+	},
+	judgeIsWork: function (day) {
+		var date = this.dateFormat('yyyy-MM-dd',new Date(day));
+		if (this.inArray(date, allWorks) > -1) {
+			return true;
+		} else {
+			return false;
+		}
+	},
 	/**
 	 * 判断闰年
 	 * @param  {Number}  year 需要判断的年份
@@ -242,7 +269,6 @@ module.exports = {
 	 * @return {String}
 	 */
 	handleCalendarDisplayName: function (date, isHoliday, isVication) {
-
 		var self = this;
 		var dt = this.dateFormat('yyyy-MM-dd', date);
 		if (isVication) {

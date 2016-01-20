@@ -34,10 +34,12 @@
                                     'selected-line': isStartDate < new Date(day).getTime() && new Date(day).getTime() < isEndDate,
                                     'disabled': today > new Date(day).getTime(),
                                     'without-text': withoutText,
-                                    'border-radius': borderRadius
+                                    'border-radius': borderRadius,
+                                    'is-holiday': judgeIsHoliday(day),
+                                    'is-work': judgeIsWork(day)
                                 }"
                                 data-date-format="{{day | convertDateFormatValue}}"
-                                ><span>{{day | convertDateFormatDisplay isHoliday isVication}}</span><i></i></li>
+                                ><span class="dd">{{day | convertDateFormatDisplay isHoliday isVication}}</span><i></i><span class="holiday"></span></li>
                         </ul>
                     </div>
                 </div>
@@ -70,10 +72,12 @@ export default {
         isVication: {
             type: Boolean,
             default: true
-        }, //是否显示假期提醒
+        } //是否显示假期提醒
+
     },
     data() {
-        // var today = utils.dateFormat('yyyy-MM-dd', new Date());
+
+
         return {
             panel: utils.getAllPanelData(this.maxDate),
             isStartDate: utils.formatDateConvert(this.startDate),
@@ -81,7 +85,13 @@ export default {
             today: utils.getTodaySec(),
             selectBefore: null,
             withoutText: null,
-            borderRadius: null
+            borderRadius: null,
+            judgeIsHoliday: function(day){
+                return utils.judgeIsHoliday(day)
+            },
+            judgeIsWork: function(day){
+                return utils.judgeIsWork(day)
+            }
         }
     },
     methods: {
@@ -118,8 +128,10 @@ export default {
                 this.isStartDate = sec;
                 this.isEndDate = null;
                 this.withoutText = true;
+                this.borderRadius = true;
             }
         }
+
     },
     events: {
 
