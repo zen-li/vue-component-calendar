@@ -37,7 +37,7 @@
                                     'border-radius': borderRadius
                                 }"
                                 data-date-format="{{day | convertDateFormatValue}}"
-                                ><span>{{day | convertDateFormatDisplay}}</span><i></i></li>
+                                ><span>{{day | convertDateFormatDisplay isHoliday isVication}}</span><i></i></li>
                         </ul>
                     </div>
                 </div>
@@ -63,8 +63,14 @@ export default {
             type: Boolean,
             default: true
         }, //支持单选或者双选
-        isHoliday: Boolean, //是否显示节日名称
-        isVacation: Boolean, //是否显示假期提醒
+        isHoliday: {
+            type: Boolean,
+            default: true
+        }, //是否显示节日名称
+        isVication: {
+            type: Boolean,
+            default: true
+        }, //是否显示假期提醒
     },
     data() {
         // var today = utils.dateFormat('yyyy-MM-dd', new Date());

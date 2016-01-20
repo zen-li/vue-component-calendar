@@ -15,9 +15,9 @@ module.exports = {
 		var self = this;
 		return {
 			//处理日期
-			convertDateFormatDisplay: function (date) {
+			convertDateFormatDisplay: function (date, isHoliday, isVication) {
 				if (date != '') {
-					return self.handleCalendarDisplayName(date);
+					return self.handleCalendarDisplayName(date, isHoliday, isVication);
 				} else {
 					return '';
 				}
@@ -78,7 +78,7 @@ module.exports = {
 			currentDays = new Date(year, month + 1, 0).getDate(),
 			preDays = new Date(year, month, 0).getDate(),
 			firstDay = new Date(year, month, 1),
-			firstCell = firstDay.getDay() === 0 ? 7 : firstDay.getDay(),//从周日开始
+			firstCell = firstDay.getDay() === 0 ? 7 : firstDay.getDay(), //从周日开始
 			bottomCell = 35 - currentDays - firstCell;
 		var tof = isCompleteMonth || typeof (isCompleteMonth) === 'undefined' ? true : false; //if `isCompleteMonth` is undefined, default the value is true.
 		if (tof) {
@@ -204,10 +204,10 @@ module.exports = {
 	 * @return {Number}      The value like this: 1454256000000
 	 */
 	formatDateConvert: function (date) {
-		if(date){
+		if (date) {
 			var date = date.split('-');
 			return new Date(date[0] * 1, date[1] * 1 - 1, date[2] * 1).getTime(); //Compatible safari browser & webkit kernel.
-		}else{
+		} else {
 			return '';
 		}
 
@@ -241,24 +241,24 @@ module.exports = {
 	 * @param  {Date} date The Date Object, format like this: 'Wed Jan 20 2016 16:47:00 GMT+0800 (CST)'
 	 * @return {String}
 	 */
-	handleCalendarDisplayName: function (date) {
+	handleCalendarDisplayName: function (date, isHoliday, isVication) {
+
 		var self = this;
 		var dt = this.dateFormat('yyyy-MM-dd', date);
-		var isInVication = this.inArray(dt, allVications)
-		if (isInVication > -1) {
-			return self.showNameWithDate(dt);
-		} else {
-			if (self.isToday(dt)) {
-				return '今天';
+		if (isVication) {
+			var isInVication = this.inArray(dt, allVications);
+			if (isInVication > -1) {
+				return self.showNameWithDate(dt);
 			}
-			if (self.isTomorrow(dt)) {
-				return '明天';
-			} else {
-				return new Date(date).getDate();
-			}
-
 		}
-
+		if (self.isToday(dt)) {
+			return '今天';
+		}
+		if (self.isTomorrow(dt)) {
+			return '明天';
+		} else {
+			return new Date(date).getDate();
+		}
 	},
 
 	/**
@@ -308,10 +308,10 @@ module.exports = {
 		if (day == format) return true;
 		return false;
 	},
-	getTodaySec: function(){
+	getTodaySec: function () {
 		var year = new Date().getFullYear(),
 			month = new Date().getMonth(),
 			day = new Date().getDate();
-		return new Date(year,month,day).getTime();
+		return new Date(year, month, day).getTime();
 	}
 }
