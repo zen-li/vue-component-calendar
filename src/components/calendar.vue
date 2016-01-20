@@ -20,17 +20,23 @@
                     <li class="weekend">六</li>
                 </ul>
             </div>
-            <div class="vue-calendar-date-wrapper" id="scrollPanel" @scroll="scrollFunction">
+            <div class="vue-calendar-date-wrapper" id="scrollPanel" @scroll="scrollFunction" style="position: relative;top:0px;">
                 <div v-for="(index,item) in panel" data-index="{{index}}">
                     <div class="month-bar" v-bind:class="{'first-month-bar':index==0}" id="topHeight3">{{item.month}}</div>
                     <div class="month-list" v-bind:class="{'first-day-panel':index==0}">
                         <ul>
-                            <li 
-                                @click.prevent="selectedFunc" 
-                                v-for="day in item.days" 
-                                date-sec="{{new Date(day).getTime()}}"
-                                :class="{'selected-start': isStartDate == new Date(day).getTime(),'selected-end': isEndDate == new Date(day).getTime(), 'selected-line': isStartDate < new Date(day).getTime() && new Date(day).getTime() < isEndDate}" 
-                                data-date-format="{{day | convertDateFormatValue}}" 
+                            <li
+                                @click.prevent="selectedFunc"
+                                v-for="day in item.days"
+                                date-sec="{{new Date(day).getTime() || ''}}"
+                                :class="{'selected-start': isStartDate == new Date(day).getTime(),
+                                    'selected-end': isEndDate == new Date(day).getTime(),
+                                    'selected-line': isStartDate < new Date(day).getTime() && new Date(day).getTime() < isEndDate,
+                                    'disabled': today > new Date(day).getTime(),
+                                    'without-text': withoutText,
+                                    'border-radius': borderRadius
+                                }"
+                                data-date-format="{{day | convertDateFormatValue}}"
                                 ><span>{{day | convertDateFormatDisplay}}</span><i></i></li>
                         </ul>
                     </div>
@@ -49,47 +55,64 @@ export default {
             default: false,
             twoWay: true
         },
+        startMonth: Date, //日历面板从哪个月开始，与isCompleteMonth互斥
         maxDate: String, //允许操作的最大日期
         startDate: String, //开始日期
         endDate: String, //结束日期
-        isCompleteMonth: Boolean, //是否显示今天之前的日期
-        isDoubleCheck: Boolean, //支持单选或者双选
+        isDoubleCheck: {
+            type: Boolean,
+            default: true
+        }, //支持单选或者双选
         isHoliday: Boolean, //是否显示节日名称
         isVacation: Boolean, //是否显示假期提醒
     },
     data() {
-        var today = utils.dateFormat('yyyy-MM-dd', new Date());
-
+        // var today = utils.dateFormat('yyyy-MM-dd', new Date());
         return {
-            months: utils.getCurrentMonthTableData(),
             panel: utils.getAllPanelData(this.maxDate),
-            isStartDate: utils.formatDateConvert(this.startDate ||  today),
-            isEndDate: utils.formatDateConvert(this.endDate || today),
-            selectBefore:null,
+            isStartDate: utils.formatDateConvert(this.startDate),
+            isEndDate: utils.formatDateConvert(this.endDate),
+            today: utils.getTodaySec(),
+            selectBefore: null,
+            withoutText: null,
+            borderRadius: null
         }
     },
     methods: {
-        scrollFunction: function(event) {
-
-        },
         selectedFunc: function(event) {
             var sec = event.currentTarget.getAttribute('date-sec');
-            this.isStartDate = sec;
-            if(this.isEndDate){
-                this.selectBefore = sec;
-                this.isEndDate = null;
-            }else{
-                this.isStartDate = this.selectBefore;
-                this.isEndDate = sec;
-                if(this.isStartDate >= this.isEndDate ){
-                    this.isStartDate = sec;
+            if(sec < this.today){
+                return;
+            }
+            if(this.isDoubleCheck){
+                this.isStartDate = sec;
+                this.borderRadius = true;
+                if(this.isEndDate){
                     this.selectBefore = sec;
                     this.isEndDate = null;
-                }
-            }
-        },
-        handleDisplayText: function(text){
 
+                }else{
+                    if(this.selectBefore){
+                        this.isStartDate = this.selectBefore;
+                        this.isEndDate = sec;
+                        this.borderRadius = false;
+                        if(this.isStartDate >= this.isEndDate ){
+                            this.isStartDate = sec;
+                            this.selectBefore = sec;
+                            this.isEndDate = null;
+                            this.borderRadius = true;
+                        }
+                    }else{
+                        this.isStartDate = sec;
+                        this.selectBefore = sec;
+                        this.isEndDate = null;
+                    }
+                }
+            }else{
+                this.isStartDate = sec;
+                this.isEndDate = null;
+                this.withoutText = true;
+            }
         }
     },
     events: {

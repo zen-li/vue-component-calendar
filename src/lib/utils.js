@@ -10,9 +10,6 @@ var allVications = [];
 		}
 	}
 })()
-
-
-
 module.exports = {
 	filters: function () {
 		var self = this;
@@ -20,7 +17,7 @@ module.exports = {
 			//处理日期
 			convertDateFormatDisplay: function (date) {
 				if (date != '') {
-					return self.getVicationName(date);
+					return self.handleCalendarDisplayName(date);
 				} else {
 					return '';
 				}
@@ -38,7 +35,7 @@ module.exports = {
 	/**
 	 * 判断闰年
 	 * @param  {Number}  year 需要判断的年份
-	 * @return {Boolean}      
+	 * @return {Boolean}
 	 */
 	isLeap: function (year) {
 		return (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0;
@@ -56,7 +53,7 @@ module.exports = {
 
 	/**
 	 * get this year
-	 * @return {Number} return this year 
+	 * @return {Number} return this year
 	 */
 	getThisYear: function () {
 		return new Date().getFullYear();
@@ -65,10 +62,12 @@ module.exports = {
 		return new Date().getMonth() + 1;
 	},
 	/**
-	 * 获取当前月份表格内的数
-	 * @return {[type]} [description]
+	 * Get all date's data you want.
+	 * @param  {Date}  date  The date you want to start.
+	 * @param  {Boolean} isCompleteMonth Whether display the days which has passed.
+	 * @return {Array}
 	 */
-	getCurrentMonthTableData: function (date) {
+	getCurrentMonthTableData: function (date, isCompleteMonth) {
 		//如果传递了Date对象，则按Date对象进行计算月份面板
 		//否则，按照当前月份计算面板
 		var date = date || new Date(),
@@ -79,33 +78,48 @@ module.exports = {
 			currentDays = new Date(year, month + 1, 0).getDate(),
 			preDays = new Date(year, month, 0).getDate(),
 			firstDay = new Date(year, month, 1),
-			firstCell = firstDay.getDay() === 0 ? 7 : firstDay.getDay(),
+			firstCell = firstDay.getDay() === 0 ? 7 : firstDay.getDay(),//从周日开始
 			bottomCell = 35 - currentDays - firstCell;
+		var tof = isCompleteMonth || typeof (isCompleteMonth) === 'undefined' ? true : false; //if `isCompleteMonth` is undefined, default the value is true.
+		if (tof) {
+			//前一个月该显示多少天
+			var preMonth = [];
+			for (var p = firstCell; p > 0; p--) {
+				// preMonth.push(new Date(year, month - 1, preDays - p + 1));
+				preMonth.push('');
+			}
+			//本月
+			var currentMonth = [];
+			for (var c = 0; c < currentDays; c++) {
+				currentMonth.push(new Date(year, month, c + 1));
+				// currentMonth.push('');
+			}
+			//下一个月
+			var nextMonth = [];
+			for (var n = 0; n < bottomCell; n++) {
+				// nextMonth.push(new Date(year, month + 1, n + 1));
+				nextMonth.push('');
+			}
 
-		//前一个月该显示多少天
-		var preMonth = [];
-		for (var p = firstCell; p > 0; p--) {
-			// preMonth.push(new Date(year, month - 1, preDays - p + 1));
-			preMonth.push('');
-		}
-		//本月
-		var currentMonth = [];
-		for (var c = 0; c < currentDays; c++) {
-			currentMonth.push(new Date(year, month, c + 1));
-			// currentMonth.push('');
-		}
-		//下一个月
-		var nextMonth = [];
-		for (var n = 0; n < bottomCell; n++) {
-			// nextMonth.push(new Date(year, month + 1, n + 1));
-			nextMonth.push('');
-		}
+			preMonth = preMonth.concat(currentMonth, nextMonth);
+			return preMonth;
+		} else {
 
-		preMonth = preMonth.concat(currentMonth, nextMonth);
-		return preMonth;
+			//前一个月该显示多少天
+			var preMonth = [];
+			for (var p = firstCell; p > 0; p--) {
+				// preMonth.push(new Date(year, month - 1, preDays - p + 1));
+				preMonth.push('');
+			}
+			var currentMonth = [];
+			for (var c = 0; c < currentDays; c++) {
+				currentMonth.push(new Date(year, month, c + 1));
+				// currentMonth.push('');
+			}
+		}
 	},
 
-	getAllPanelData: function (maxDate) {
+	getAllPanelData: function (maxDate, isCompleteMonth) {
 		var self = this;
 		if (maxDate.indexOf('d') == -1 && maxDate.indexOf('m') == -1) {
 			self.consoleError('Vue Component Calendar Error: Parameter error, the \'maxDate\' parameter must contain a string \'d\' or \'m\'.');
@@ -148,7 +162,7 @@ module.exports = {
 
 					all.push({
 						month: thisYear + '年' + thisMonth + '月',
-						days: self.getCurrentMonthTableData(new Date(thisYear, thisMonth - 1, 1))
+						days: self.getCurrentMonthTableData(new Date(thisYear, thisMonth - 1, 1), isCompleteMonth)
 					})
 				}
 			} else {
@@ -171,25 +185,41 @@ module.exports = {
 	dateFormat: function (fmt, date) {
 		var thisDate = date || new Date();
 		var o = {
-			"M+": thisDate.getMonth() + 1, //月份 
-			"d+": thisDate.getDate(), //日 
-			"h+": thisDate.getHours(), //小时 
-			"m+": thisDate.getMinutes(), //分 
-			"s+": thisDate.getSeconds(), //秒 
-			"q+": Math.floor((thisDate.getMonth() + 3) / 3), //季度 
-			"S": thisDate.getMilliseconds() //毫秒 
+			"M+": thisDate.getMonth() + 1, //月份
+			"d+": thisDate.getDate(), //日
+			"h+": thisDate.getHours(), //小时
+			"m+": thisDate.getMinutes(), //分
+			"s+": thisDate.getSeconds(), //秒
+			"q+": Math.floor((thisDate.getMonth() + 3) / 3), //季度
+			"S": thisDate.getMilliseconds() //毫秒
 		};
 		if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (thisDate.getFullYear() + "").substr(4 - RegExp.$1.length));
 		for (var k in o)
 			if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
 		return fmt;
 	},
-	//date: yy-mm-dd
+	/**
+	 * Convert the date like "2016-01-01" to seconds like '1454256000000'
+	 * @param  {String} date The format like this: 2016-01-01.
+	 * @return {Number}      The value like this: 1454256000000
+	 */
 	formatDateConvert: function (date) {
-		var date = date.split('-');
-		return new Date(date[0]* 1,date[1]* 1 - 1,date[2]* 1).getTime();
+		if(date){
+			var date = date.split('-');
+			return new Date(date[0] * 1, date[1] * 1 - 1, date[2] * 1).getTime(); //Compatible safari browser & webkit kernel.
+		}else{
+			return '';
+		}
+
 	},
 
+	/**
+	 * Judge element is in Array or not. like the lodash's `_.contains()` method or jQuery's `inArray` method.
+	 * @param  {String or Number} elem The element you want to judge.
+	 * @param  {Array} arr  The array you want to test.
+	 * @param  {number} i   The index you want to start check.
+	 * @return {Number} If the value equals '-1', it means that the result is NOT in your Array. Attention, it is not Boolean return.
+	 */
 	inArray: function (elem, arr, i) {
 		var len;
 		if (arr) {
@@ -206,8 +236,12 @@ module.exports = {
 		return -1;
 	},
 
-	//获取假期名称
-	getVicationName: function (date) {
+	/**
+	 * Handle the display name by different properties.
+	 * @param  {Date} date The Date Object, format like this: 'Wed Jan 20 2016 16:47:00 GMT+0800 (CST)'
+	 * @return {String}
+	 */
+	handleCalendarDisplayName: function (date) {
 		var self = this;
 		var dt = this.dateFormat('yyyy-MM-dd', date);
 		var isInVication = this.inArray(dt, allVications)
@@ -219,14 +253,19 @@ module.exports = {
 			}
 			if (self.isTomorrow(dt)) {
 				return '明天';
-			}else {
-				return new Date(date).getDate();	
+			} else {
+				return new Date(date).getDate();
 			}
-			
+
 		}
 
 	},
-	//根据日期获取假期名字
+
+	/**
+	 * Get the vication name by date
+	 * @param  {String} date The date value's format like this: "2016-02-07"
+	 * @return {String}      The vication name which matched your date.
+	 */
 	showNameWithDate: function (date) {
 		for (var i in vication) {
 			for (var j in vication[i].dates) {
@@ -236,23 +275,43 @@ module.exports = {
 			}
 		}
 	},
-	isChinese: function (temp) {
+	/**
+	 * judge the value you check is Chinese or not.
+	 * @param  {String}  text The value you want to check.
+	 * @return {Boolean}
+	 */
+	isChinese: function (text) {
 		var re = /[^\u4e00-\u9fa5]/;
-		if (re.test(temp)) return false;
+		if (re.test(text)) return false;
 		return true;
 	},
-	//传入数字：20
+	/**
+	 * Judge today's date is "today" or not.
+	 * @param  {String}  day The value's format like this: "2016-01-20"
+	 * @return {Boolean}
+	 */
 	isToday: function (day) {
-		var today = this.dateFormat('yyyy-MM-dd',new Date());
+		var today = this.dateFormat('yyyy-MM-dd', new Date());
 		if (day == today) {
 			return true
 		};
 		return false;
 	},
+	/**
+	 * Judge tomorrow's date is "tomorrow" or not.
+	 * @param  {String}  day The value's format like this: "2016-01-20"
+	 * @return {Boolean}     isTomorrow
+	 */
 	isTomorrow: function (day) {
 		var tomorrow = new Date(new Date().getTime() + 24 * 60 * 60 * 1000);
-		var format = this.dateFormat('yyyy-MM-dd',tomorrow)
+		var format = this.dateFormat('yyyy-MM-dd', tomorrow)
 		if (day == format) return true;
 		return false;
+	},
+	getTodaySec: function(){
+		var year = new Date().getFullYear(),
+			month = new Date().getMonth(),
+			day = new Date().getDate();
+		return new Date(year,month,day).getTime();
 	}
 }
