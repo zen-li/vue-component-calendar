@@ -80,8 +80,7 @@ li {
         height: 0.6rem;
         line-height: 0.6rem;
         position: relative;
-
-        .weekend{
+        .weekend {
             color: #fa967f;
         }
         &:after {
@@ -147,11 +146,51 @@ li {
                 height: 1rem;
                 line-height: 1rem;
                 color: #333333;
+                span {
+                    position: relative;
+                    top: -0.15rem;
+                }
                 &:after {
                     .one-px-line;
                 }
-                &.selected{
-                    color: #fff;
+                &.selected {
+                    &-start {
+                        border-radius: 0.06rem 0 0 0.06rem;
+                        i:after {
+                            content: '入住';
+                        }
+                    }
+                    &-end {
+                        border-radius: 0 0.06rem 0.06rem 0;
+                        i:after {
+                            content: '离店';
+                        }
+                    }
+                    &-start,
+                    &-end {
+                        color: #fff;
+                        background: #2eb6a8;
+                        i{
+                            // width: 100%;
+                        }
+                        i:after {
+                            position: absolute;
+                            top: 0.2rem;
+                            left: 0;
+                            font-size: 0.24rem;
+                            font-style: normal;
+                            text-align: center;
+                            width: 100%;
+                        }
+                    }
+                    &-line {
+                        background: #e0f4f2;
+                        color: #333;
+                        border-top: 1px solid #2eb6a8;
+                        height: 0.98rem;
+                        line-height: 0.98rem;
+                        border-bottom: 1px solid #2eb6a8;
+                    }
                 }
             }
         }

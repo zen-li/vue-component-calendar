@@ -88,7 +88,7 @@
 <body>
     <div class="content">
         <button @click.prevent="showCalendar=true">唤醒日历</button>
-        <calendar :show-calendar.sync="showCalendar" max-date="3m"></calendar>
+        <calendar :show-calendar.sync="showCalendar" max-date="3m" start-date="2016-01-21" end-date="2016-01-25"></calendar>
     </div>
     <script type="text/javascript">
     var ef = new Vue({

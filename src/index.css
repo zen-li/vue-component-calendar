@@ -136,6 +136,10 @@ li {
   line-height: 1rem;
   color: #333333;
 }
+.vue-calendar-content .vue-calendar-date-wrapper .month-list li span {
+  position: relative;
+  top: -0.15rem;
+}
 .vue-calendar-content .vue-calendar-date-wrapper .month-list li:after {
   content: "";
   position: absolute;
@@ -146,8 +150,40 @@ li {
   -webkit-transform: scaleY(0.5);
   -webkit-transform-origin: 0 0;
 }
-.vue-calendar-content .vue-calendar-date-wrapper .month-list li.selected {
+.vue-calendar-content .vue-calendar-date-wrapper .month-list li.selected-start {
+  border-radius: 0.06rem 0 0 0.06rem;
+}
+.vue-calendar-content .vue-calendar-date-wrapper .month-list li.selected-start i:after {
+  content: '入住';
+}
+.vue-calendar-content .vue-calendar-date-wrapper .month-list li.selected-end {
+  border-radius: 0 0.06rem 0.06rem 0;
+}
+.vue-calendar-content .vue-calendar-date-wrapper .month-list li.selected-end i:after {
+  content: '离店';
+}
+.vue-calendar-content .vue-calendar-date-wrapper .month-list li.selected-start,
+.vue-calendar-content .vue-calendar-date-wrapper .month-list li.selected-end {
   color: #fff;
+  background: #2eb6a8;
+}
+.vue-calendar-content .vue-calendar-date-wrapper .month-list li.selected-start i:after,
+.vue-calendar-content .vue-calendar-date-wrapper .month-list li.selected-end i:after {
+  position: absolute;
+  top: 0.2rem;
+  left: 0;
+  font-size: 0.24rem;
+  font-style: normal;
+  text-align: center;
+  width: 100%;
+}
+.vue-calendar-content .vue-calendar-date-wrapper .month-list li.selected-line {
+  background: #e0f4f2;
+  color: #333;
+  border-top: 1px solid #2eb6a8;
+  height: 0.98rem;
+  line-height: 0.98rem;
+  border-bottom: 1px solid #2eb6a8;
 }
 .vue-component-calendar-content-transition {
   transition: all ease-in-out 0.3s;

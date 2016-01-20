@@ -19,10 +19,8 @@ module.exports = {
 		return {
 			//处理日期
 			convertDateFormatDisplay: function (date) {
-				// console.log(self.dateFormat('yyyy-MM-dd',date))
 				if (date != '') {
 					return self.getVicationName(date);
-					// return 
 				} else {
 					return '';
 				}
@@ -49,7 +47,7 @@ module.exports = {
 	 * 计算每个月包含多少天
 	 * @return {Array} 12个月，每个月包含多少天
 	 */
-	allMonth: function () {
+	getAllMonth: function () {
 		var thisYear = this.getThisYear();
 		var month = [31, null, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 		month[1] = this.isLeap(thisYear) ? 28 : 29;
@@ -186,6 +184,11 @@ module.exports = {
 			if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
 		return fmt;
 	},
+	//date: yy-mm-dd
+	formatDateConvert: function (date) {
+		var date = date.split('-');
+		return new Date(date[0]* 1,date[1]* 1 - 1,date[2]* 1).getTime();
+	},
 
 	inArray: function (elem, arr, i) {
 		var len;
@@ -211,7 +214,15 @@ module.exports = {
 		if (isInVication > -1) {
 			return self.showNameWithDate(dt);
 		} else {
-			return new Date(date).getDate();
+			if (self.isToday(dt)) {
+				return '今天';
+			}
+			if (self.isTomorrow(dt)) {
+				return '明天';
+			}else {
+				return new Date(date).getDate();	
+			}
+			
 		}
 
 	},
@@ -224,5 +235,24 @@ module.exports = {
 				}
 			}
 		}
+	},
+	isChinese: function (temp) {
+		var re = /[^\u4e00-\u9fa5]/;
+		if (re.test(temp)) return false;
+		return true;
+	},
+	//传入数字：20
+	isToday: function (day) {
+		var today = this.dateFormat('yyyy-MM-dd',new Date());
+		if (day == today) {
+			return true
+		};
+		return false;
+	},
+	isTomorrow: function (day) {
+		var tomorrow = new Date(new Date().getTime() + 24 * 60 * 60 * 1000);
+		var format = this.dateFormat('yyyy-MM-dd',tomorrow)
+		if (day == format) return true;
+		return false;
 	}
 }
