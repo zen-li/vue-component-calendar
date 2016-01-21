@@ -18,10 +18,12 @@ var allWorks = [];
 	for (var m in holiday) {
 		allHolidays.push(m);
 	}
+	
 	for (var n in work) {
 		allWorks.push(n);
 	}
-})()
+})();
+
 module.exports = {
 	filters: function () {
 		var self = this;
@@ -44,7 +46,7 @@ module.exports = {
 		}
 	},
 	judgeIsHoliday: function (day) {
-		var date = this.dateFormat('yyyy-MM-dd',new Date(day));
+		var date = this.dateFormat('yyyy-MM-dd', new Date(day));
 		if (this.inArray(date, allHolidays) > -1) {
 			return true;
 		} else {
@@ -52,7 +54,7 @@ module.exports = {
 		}
 	},
 	judgeIsWork: function (day) {
-		var date = this.dateFormat('yyyy-MM-dd',new Date(day));
+		var date = this.dateFormat('yyyy-MM-dd', new Date(day));
 		if (this.inArray(date, allWorks) > -1) {
 			return true;
 		} else {
@@ -201,7 +203,7 @@ module.exports = {
 
 	},
 	logError: function (msg) {
-		var msg = 'Vue Component Calendar Error: '+ msg;
+		var msg = 'Vue Component Calendar Error: ' + msg;
 		window.console && console.error(msg);
 	},
 	/**
@@ -237,9 +239,9 @@ module.exports = {
 
 			var date = date.split('-');
 			var dateSec = new Date(date[0] * 1, date[1] * 1 - 1, date[2] * 1).getTime(); //Compatible safari browser & webkit kernel.
-			if(dateSec >= self.getTodaySec()){
+			if (dateSec >= self.getTodaySec()) {
 				return dateSec
-			}else{
+			} else {
 				self.logError('maybe your "startDate" is before today? please check the value with "startDate" or "endDate".');
 			}
 		} else {
@@ -282,7 +284,7 @@ module.exports = {
 		if (isVication) {
 			var isInVication = this.inArray(dt, allVications);
 			if (isInVication > -1) {
-				return self.showNameWithDate(dt);
+				return self.showVicationNameWithDate(dt);
 			}
 		}
 		if (self.isToday(dt)) {
@@ -300,7 +302,7 @@ module.exports = {
 	 * @param  {String} date The date value's format like this: "2016-02-07"
 	 * @return {String}      The vication name which matched your date.
 	 */
-	showNameWithDate: function (date) {
+	showVicationNameWithDate: function (date) {
 		for (var i in vication) {
 			for (var j in vication[i].dates) {
 				if (vication[i]["dates"][j] == date) {
@@ -309,6 +311,11 @@ module.exports = {
 			}
 		}
 	},
+
+	showHolidayNameWithDate: function(date){
+		return holiday[date];
+	},
+
 	/**
 	 * judge the value you check is Chinese or not.
 	 * @param  {String}  text The value you want to check.
@@ -342,10 +349,42 @@ module.exports = {
 		if (day == format) return true;
 		return false;
 	},
+
 	getTodaySec: function () {
 		var year = new Date().getFullYear(),
 			month = new Date().getMonth(),
 			day = new Date().getDate();
 		return new Date(year, month, day).getTime();
+	},
+
+	/**
+	 * Number of days between two days.
+	 * @param  {Number} start Start time, format like this: 1453359993611
+	 * @param  {Number} end   End time, format like this: 1453359993611
+	 * @return {Number}       days number.
+	 */
+	calculateDaysNum: function (start, end) {
+		var interval = end - start;
+		return interval / 86400000 + 1; //return days number.
+	},
+
+	calculateDaysInfo: function (start, end) {
+		var self = this;
+		var days = {};
+		var daysNum = self.calculateDaysNum(start, end);
+		for (var i = 0; i < daysNum; i++) {
+			var nextDay = Number(start) + 86400000 * i;
+			if (nextDay <= end) {
+				var thisDateWithFormat = self.dateFormat('yyyy-MM-dd', new Date(nextDay));
+				var thisDate = nextDay;
+				days[thisDate] = {
+					'date': thisDateWithFormat,
+					'vicationName': self.showVicationNameWithDate(thisDateWithFormat) || '',
+					'holidayName': self.showHolidayNameWithDate(thisDateWithFormat) || ''
+				};
+			}
+		}
+		return days;
 	}
+
 }

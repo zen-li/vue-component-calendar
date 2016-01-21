@@ -23,63 +23,63 @@
     <link rel="apple-touch-startup-image" media="(device-height:568px)" href="http://mc.meituan.net/touch/img/startup/apple-touch-startup-image-640x1096.png">
     <link rel="apple-touch-startup-image" media="(device-height:480px)" href="http://mc.meituan.net/touch/img/startup/apple-touch-startup-image-640x920.png">
     <style>
-    body {
-        padding: 10px;
-        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    }
+        body {
+            padding: 10px;
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        }
 
-    button {
-        display: inline-block;
-        padding: 6px 12px;
-        margin-bottom: 0;
-        font-size: 14px;
-        font-weight: 400;
-        line-height: 1.42857143;
-        text-align: center;
-        white-space: nowrap;
-        vertical-align: middle;
-        -ms-touch-action: manipulation;
-        touch-action: manipulation;
-        cursor: pointer;
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        -ms-user-select: none;
-        user-select: none;
-        background-image: none;
-        border: 1px solid transparent;
-        border-radius: 4px;
-        border-radius: 3px;
-        background: #337ab7;
-        text-transform: none;
-        color: #fff;
-        background-color: #337ab7;
-        border-color: #2e6da4;
-        margin: 20px;
-    }
+        button {
+            display: inline-block;
+            padding: 6px 12px;
+            margin-bottom: 0;
+            font-size: 14px;
+            font-weight: 400;
+            line-height: 1.42857143;
+            text-align: center;
+            white-space: nowrap;
+            vertical-align: middle;
+            -ms-touch-action: manipulation;
+            touch-action: manipulation;
+            cursor: pointer;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            background-image: none;
+            border: 1px solid transparent;
+            border-radius: 4px;
+            border-radius: 3px;
+            background: #337ab7;
+            text-transform: none;
+            color: #fff;
+            background-color: #337ab7;
+            border-color: #2e6da4;
+            margin: 20px;
+        }
     </style>
     <script type="text/javascript" src="http://awp-assets.meituan.net/assets/vue/1.0.12/vue.min.js"></script>
     <script src="../build/build.js"></script>
     <script type="text/javascript">
-    (function() {
-        var isIPhone = window.navigator.appVersion.match(/iphone/gi);
-        var devicePixelRatio = window.devicePixelRatio;
-        var dpr = 1;
-        if (isIPhone) {
-            if (devicePixelRatio >= 2) {
-                dpr = 2;
+        (function() {
+            var isIPhone = window.navigator.appVersion.match(/iphone/gi);
+            var devicePixelRatio = window.devicePixelRatio;
+            var dpr = 1;
+            if (isIPhone) {
+                if (devicePixelRatio >= 2) {
+                    dpr = 2;
+                }
             }
-        }
-        var scale = 1 / dpr;
+            var scale = 1 / dpr;
 
-        var metaViewport = '<meta name="viewport" content="initial-scale=' + scale + ', maximum-scale=' + scale + ', minimum-scale=' + scale + ', user-scalable=no, width=device-width, shrink-to-fit=no" />';
-        document.write(metaViewport);
+            var metaViewport = '<meta name="viewport" content="initial-scale=' + scale + ', maximum-scale=' + scale + ', minimum-scale=' + scale + ', user-scalable=no, width=device-width, shrink-to-fit=no" />';
+            document.write(metaViewport);
 
-        var docEl = document.documentElement;
-        var width = docEl.getBoundingClientRect().width;
-        if (width / dpr > 450) width = dpr * 450;
-        var rem = width / 6.4;
-        docEl.style.fontSize = rem + 'px';
-    })();
+            var docEl = document.documentElement;
+            var width = docEl.getBoundingClientRect().width;
+            if (width / dpr > 450) width = dpr * 450;
+            var rem = width / 6.4;
+            docEl.style.fontSize = rem + 'px';
+        })();
     </script>
 </head>
 
@@ -89,22 +89,31 @@
         <calendar
             :show-calendar.sync="showCalendar"
             max-date="4m"
+            start-date="2016-01-21"
+            end-date="2016-01-25"
             :is-double-check.sync=true
-            :is-vication.sync=true
-            ></calendar>
+            :is-vication.sync=true></calendar>
     </div>
     <script type="text/javascript">
-    var ef = new Vue({
-        el: '.content',
-        data: {
-            showCalendar: true,
-        },
-        components: {
-            "calendar": vueComCalendar.calendar
-        },
-        methods: {
-        }
-    });
+        var ef = new Vue({
+            el: '.content',
+            data: {
+                showCalendar: true,
+                result: null
+            },
+            components: {
+                "calendar": vueComCalendar.calendar
+            },
+            events: {
+                confirm: function(result) {
+                    //do whatever you want.
+                    console.log(result)
+                },
+                cancle: function(result) {
+                    //do nothing
+                }
+            }
+        });
     </script>
 </body>
 
