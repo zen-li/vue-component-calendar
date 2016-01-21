@@ -100,38 +100,36 @@ export default {
             if(sec < this.today){
                 return;
             }
-            if(this.isDoubleCheck){
+            if(this.isDoubleCheck){//支持多选
                 this.isStartDate = sec;
                 this.borderRadius = true;
-                if(this.isEndDate){
-                    this.selectBefore = sec;
+                if(this.isEndDate){//离店日期已经确定
+                    this.selectBefore = sec;//中间状态
                     this.isEndDate = null;
-
-                }else{
-                    if(this.selectBefore){
+                }else{//离店日期未确定
+                    if(this.selectBefore){//如果中间状态已经有了，说明这一步需要点击离店操作
                         this.isStartDate = this.selectBefore;
                         this.isEndDate = sec;
                         this.borderRadius = false;
-                        if(this.isStartDate >= this.isEndDate ){
+                        if(this.isStartDate >= this.isEndDate ){//处理入住和离店的时间先后逻辑
                             this.isStartDate = sec;
                             this.selectBefore = sec;
                             this.isEndDate = null;
                             this.borderRadius = true;
                         }
-                    }else{
+                    }else{//如果没有中间状态，说明是重新选择入住时间
                         this.isStartDate = sec;
                         this.selectBefore = sec;
                         this.isEndDate = null;
                     }
                 }
-            }else{
+            }else{//支持单选
                 this.isStartDate = sec;
                 this.isEndDate = null;
                 this.withoutText = true;
                 this.borderRadius = true;
             }
         }
-
     },
     events: {
 
