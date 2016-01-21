@@ -50,6 +50,8 @@ li {
     z-index: 1000;
     font-size: 0.3rem;
     .vue-calendar-content-title-wrapper {
+        background: #fff;
+        z-index: 1000;
         height: 0.90rem;
         line-height: 0.90rem;
         position: relative;
@@ -75,15 +77,30 @@ li {
             .one-px-line
         }
     }
+    .month-bar-fixed {
+        text-align: center;
+        height: 0.6rem;
+        line-height: 0.6rem;
+        width: 100%;
+        position: relative;
+        background: #fafafa;
+        z-index: 1000;
+
+        &:after{
+            .one-px-line;
+        }
+    }
     .week-bar {
         height: 0.6rem;
         line-height: 0.6rem;
         position: relative;
+        background: #fff;
+        z-index: 1001;
         .weekend {
             color: #fa967f;
         }
         &:after {
-            // .one-px-line
+            .one-px-line
         }
         ul {
             display: -webkit-flex;
@@ -103,8 +120,9 @@ li {
     }
     .vue-calendar-date-wrapper {
         -webkit-overflow-scrolling: touch;
-        overflow: auto;
-        height: 100%;
+        overflow: hidden;
+        position: relative;
+        margin-top: -0.6rem;
         .month-bar {
             text-align: center;
             height: 0.6rem;
@@ -112,13 +130,17 @@ li {
             width: 100%;
             position: relative;
             background: #fafafa;
-            // margin-top: -0.01rem;
             &:before {
                 .one-px-line-top;
             }
             &:after {
                 .one-px-line;
             }
+        }
+        .first-month-bar {
+            position: fixed;
+            top: 1.5rem;
+            z-index: 100;
         }
         .month-list {
             ul li {
@@ -226,10 +248,10 @@ li {
                         height: 1rem!important;
                         line-height: 1rem!important;
                         border-bottom: 0.01rem solid #2eb6a8;
-                        &:after{
+                        &:after {
                             .one-px-line;
                         }
-                        &:before{
+                        &:before {
                             .one-px-line-top;
                         }
                     }

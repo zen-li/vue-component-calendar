@@ -18,7 +18,7 @@ var allWorks = [];
 	for (var m in holiday) {
 		allHolidays.push(m);
 	}
-	
+
 	for (var n in work) {
 		allWorks.push(n);
 	}
@@ -385,6 +385,10 @@ module.exports = {
 			}
 		}
 		return days;
+	},
+	getFirstMonthName: function(maxDate){
+		var panel = this.getAllPanelData(maxDate);
+		return panel[0]['month'];
 	}
 
 }

@@ -21,24 +21,29 @@
                     <li class="weekend">六</li>
                 </ul>
             </div>
-            <div class="vue-calendar-date-wrapper" id="scrollPanel" @scroll="scrollFunction" style="position: relative;top:0px;">
-                <div v-for="(index,item) in panel" data-index="{{index}}">
-                    <div class="month-bar" v-bind:class="{'first-month-bar':index==0}" id="topHeight3">{{item.month}}</div>
-                    <div class="month-list" v-bind:class="{'first-day-panel':index==0}">
-                        <ul>
-                            <li @click.prevent="selectedFunc" v-for="day in item.days" date-sec="{{new Date(day).getTime() || ''}}" :class="{'selected-start': isStartDate == new Date(day).getTime(),
-                                    'selected-end': isEndDate == new Date(day).getTime(),
-                                    'selected-line': isStartDate < new Date(day).getTime() && new Date(day).getTime() < isEndDate,
-                                    'disabled': today > new Date(day).getTime(),
-                                    'without-text': withoutText,
-                                    'border-radius': borderRadius,
-                                    'is-holiday': judgeIsHoliday(day),
-                                    'is-work': judgeIsWork(day)
-                                }" data-date-format="{{day | convertDateFormatValue}}">
-                                <span class="dd">{{day | convertDateFormatDisplay isHoliday isVication}}</span><i></i>
-                                <span class="holiday"></span>
-                            </li>
-                        </ul>
+            <div class="month-bar-fixed" id="topHeight3">
+                {{fixedMonthbar}}
+            </div>
+            <div id="scrollPanelWrapper">
+                <div class="vue-calendar-date-wrapper" id="scrollPanel">
+                    <div v-for="(index,item) in panel" data-index="{{index}}">
+                        <div class="month-bar" id="monthBar-{{index}}">{{item.month}}</div>
+                        <div class="month-list">
+                            <ul>
+                                <li @click.prevent="selectedFunc" v-for="day in item.days" date-sec="{{new Date(day).getTime() || ''}}" :class="{'selected-start': isStartDate == new Date(day).getTime(),
+                                        'selected-end': isEndDate == new Date(day).getTime(),
+                                        'selected-line': isStartDate < new Date(day).getTime() && new Date(day).getTime() < isEndDate,
+                                        'disabled': today > new Date(day).getTime(),
+                                        'without-text': withoutText,
+                                        'border-radius': borderRadius,
+                                        'is-holiday': judgeIsHoliday(day),
+                                        'is-work': judgeIsWork(day)
+                                    }" data-date-format="{{day | convertDateFormatValue}}">
+                                    <span class="dd">{{day | convertDateFormatDisplay isHoliday isVication}}</span><i></i>
+                                    <span class="holiday"></span>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -48,7 +53,10 @@
 
 <script>
     var utils = require('../lib/utils');
-    var events = require('../lib/events');
+    var IScroll = require('../lib/iscroll');
+    var panelEle = null;
+    var calPanelNum = null;
+    // var events = require('../lib/events');
     export default {
         props: {
             showCalendar: {
@@ -76,8 +84,9 @@
         },
         data() {
             return {
+                fixedMonthbar: utils.getFirstMonthName(this.maxDate),
                 panel: utils.getAllPanelData(this.maxDate),
-                titleText:this.isDoubleCheck ? '请选择入离日期': '请选择日期',
+                titleText: this.isDoubleCheck ? '请选择入离日期' : '请选择日期',
                 isStartDate: utils.formatDateConvert(this.startDate),
                 isEndDate: utils.formatDateConvert(this.endDate),
                 today: utils.getTodaySec(),
@@ -90,7 +99,9 @@
                 judgeIsWork: function(day) {
                     return utils.judgeIsWork(day)
                 },
-                result: null
+                result: null,
+                panelState: 0
+
             }
         },
         methods: {
@@ -131,7 +142,7 @@
                 }
             },
 
-            calculateResult: function(type){
+            calculateResult: function(type) {
                 this.showCalendar = false;
                 var obj = {};
                 obj.startDate = this.isStartDate;
@@ -145,16 +156,91 @@
                 this.$dispatch(type, obj)
             },
 
-            scrollFunction: function(event){
-
-
-            }
+            // scrollFunc: function(){
+            //     var self = this;
+                // var doc = document;
+                // var fixedBar = doc.getElementById('topHeight3');
+                // var pre = doc.getElementById('monthBar-' + (self.panelState));
+                // var next = doc.getElementById('monthBar-' + (self.panelState + 1));
+                // var sp = doc.getElementById('scrollPanel');
+                // var top = sp.scrollTop;
+                // var top2 = next.offsetTop,
+                //     ele1 = doc.getElementById('topHeight1').clientHeight,
+                //     ele2 = doc.getElementById('topHeight2').clientHeight,
+                //     ele3 = fixedBar.clientHeight;
+                // var offsetTop = top2 - top -ele1 -ele2-ele3;
+                // if(offsetTop <= 0 && offsetTop > -ele2){
+                //     fixedBar.style.top = offsetTop + 'px';
+                //     self.fixedMonthbar = pre.innerHTML;
+                //     console.log('s1')
+                // }
+                // if(offsetTop < -ele2){
+                //     fixedBar.style.top = 0;
+                //     var content = next.innerHTML;
+                //     self.fixedMonthbar = content;
+                //     console.log('s2')
+                //     // self.panelState += 1;
+                // }
+                // console.log(offsetTop)
+            // }
         },
         ready() {
+            var self =this;
             var CAL = {
                 init: function() {
-                    events().init(); //事件初始化
-                }
+                    this.renderUI()
+                },
+                renderUI: function() {
+                    this.calScrollHeight();
+                    this.initScroll();
+
+                    // panelEle = document.getElementById('scrollPanel');
+                    // calPanelNum = document.getElementsByClassName('month-bar').length;
+                },
+                initScroll: function() {
+                    var panelState = self.panelState;
+                    var doc = document;
+                    var fixedBar = doc.getElementById('topHeight3');
+                    var pre = doc.getElementById('monthBar-' + (self.panelState));
+                    var next = doc.getElementById('monthBar-' + (self.panelState + 1));
+                    var sp = doc.getElementById('scrollPanel');
+                    var top = sp.scrollTop;
+                    var top2 = next.offsetTop,
+                    	ele1 = doc.getElementById('topHeight1').clientHeight,
+                    	ele2 = doc.getElementById('topHeight2').clientHeight,
+                    	ele3 = fixedBar.clientHeight;
+                    var myScroll = new IScroll('#scrollPanelWrapper', {
+                    	mouseWheel: true,
+                    	click: true,
+                    	probeType: 3
+                    });
+                    myScroll.on('scroll', function (event) {
+                    	// console.log(this.y)
+                    	if (this.y > 0) {
+                    		pre.style.opacity = 0;
+                    	} else {
+                    		pre.style.opacity = 1;
+                    	}
+                        // var ds = Math.abs(this.pointY) - next.offsetTop - ele3 - ele1 - ele2;
+                        console.log(this.y)
+                        // console.log(next.offsetTop)
+
+
+                    })
+                    document.addEventListener('touchmove', function (e) {
+                    	e.preventDefault();
+                    }, false);
+                },
+                calScrollHeight: function() {
+                    var doc = document;
+                    var cal = doc.getElementById('vueCalendarTemplate').clientHeight,
+                        ele1 = doc.getElementById('topHeight1').clientHeight,
+                        ele2 = doc.getElementById('topHeight2').clientHeight,
+                        ele3 = doc.getElementById('topHeight3').clientHeight;
+                    var height = cal - ele1 - ele2;
+                    doc.getElementById('scrollPanelWrapper').style.height = height + 'px';
+
+                },
             }
             CAL.init();
         }
