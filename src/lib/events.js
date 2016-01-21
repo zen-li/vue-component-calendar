@@ -19,8 +19,12 @@ module.exports = function () {
 			var height = cal - ele1 - ele2;
 			doc.getElementById('scrollPanel').style.height = height + 'px';
 		},
+		/**
+		 * 手工模拟下拉效果，移动设备上可以不使用。
+		 * @return {[type]} [description]
+		 */
 		simulatScroll: function () {
-			return;
+			return;//
 			var list = document.getElementById("scrollPanel"),
 				isTouched = false,
 				isMoved = false;

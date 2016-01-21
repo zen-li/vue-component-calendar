@@ -21,9 +21,11 @@ li {
     bottom: 0;
     left: 0;
     right: 0;
-    border-bottom: 1px solid #c9c3b7;
+    border-bottom: 1px solid #d9d9d9;
     -webkit-transform: scaleY(.5);
+    transform: scaleY(.5);
     -webkit-transform-origin: 0 0;
+    transform-origin: 0 0;
 }
 .one-px-line-top() {
     content: "";
@@ -31,9 +33,11 @@ li {
     top: 0;
     left: 0;
     right: 0;
-    border-bottom: 1px solid #c9c3b7;
+    border-bottom: 1px solid #d9d9d9;
     -webkit-transform: scaleY(.5);
+    transform: scaleY(.5);
     -webkit-transform-origin: 0 0;
+    transform-origin: 0 0;
 }
 .vue-calendar-content {
     background: #fff;
@@ -101,14 +105,6 @@ li {
         -webkit-overflow-scrolling: touch;
         overflow: auto;
         height: 100%;
-        .first-month-bar {
-            // position: fixed!important;
-            // top: 1.5rem !important;
-            // z-index: 1000;
-        }
-        .first-day-panel {
-            // margin-top: 0.6rem;
-        }
         .month-bar {
             text-align: center;
             height: 0.6rem;
@@ -135,6 +131,7 @@ li {
                 display: inline-block;
                 // float: left;
                 width: 14.286%;
+                border-bottom: 1px solid #eee;
                 text-align: center;
                 position: relative;
                 height: 1rem;
@@ -149,7 +146,7 @@ li {
                     color: #a2a2a2;
                 }
                 &:after {
-                    .one-px-line;
+                    // .one-px-line;
                 }
                 &.without-text {
                     i {
@@ -191,12 +188,14 @@ li {
                 }
                 &.selected {
                     &-start {
+                        border-bottom: none;
                         border-radius: 0.06rem 0 0 0.06rem;
                         i:after {
                             content: '入住';
                         }
                     }
                     &-end {
+                        border-bottom: none;
                         border-radius: 0 0.06rem 0.06rem 0;
                         i:after {
                             content: '离店';
@@ -204,6 +203,10 @@ li {
                     }
                     &-start,
                     &-end {
+                        border-top: 0.01rem solid #2eb6a8;
+                        border-bottom: 0.01rem solid #2eb6a8;
+                        height: 1rem!important;
+                        line-height: 1rem!important;
                         color: #fff;
                         background: #2eb6a8;
                         i:after {
@@ -220,10 +223,15 @@ li {
                         background: #e0f4f2;
                         color: #333;
                         border-top: 0.01rem solid #2eb6a8;
-                        height: 0.98rem!important;
-                        line-height: 0.98rem!important;
+                        height: 1rem!important;
+                        line-height: 1rem!important;
                         border-bottom: 0.01rem solid #2eb6a8;
-                        margin-top: -0.01rem;
+                        &:after{
+                            .one-px-line;
+                        }
+                        &:before{
+                            .one-px-line-top;
+                        }
                     }
                 }
             }

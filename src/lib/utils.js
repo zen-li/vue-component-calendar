@@ -149,11 +149,11 @@ module.exports = {
 	getAllPanelData: function (maxDate, isCompleteMonth) {
 		var self = this;
 		if (maxDate.indexOf('d') == -1 && maxDate.indexOf('m') == -1) {
-			self.consoleError('Vue Component Calendar Error: Parameter error, the \'maxDate\' parameter must contain a string \'d\' or \'m\'.');
+			self.logError('Parameter error, the \'maxDate\' parameter must contain a string \'d\' or \'m\'.');
 			return;
 		}
 		if (maxDate.indexOf('d') > -1 && maxDate.indexOf('m') > -1) {
-			self.consoleError('Vue Component Calendar Error: Parameter error, the \'maxDate\' parameter must contain one string: \'d\' or \'m\'.');
+			self.logError('Parameter error, the \'maxDate\' parameter must contain one string: \'d\' or \'m\'.');
 			return;
 		}
 		if (maxDate.indexOf('d') > -1) {
@@ -162,7 +162,7 @@ module.exports = {
 			if (days) {
 
 			} else {
-				self.consoleError('Vue Component Calendar Error: maxDate parameter error')
+				self.logError('maxDate parameter error')
 			}
 		}
 		if (maxDate.indexOf('m') > -1) {
@@ -182,7 +182,7 @@ module.exports = {
 					} else if (thisMonth > 36 && thisMonth <= 48) {
 						num = 3;
 					} else if (thisMonth > 48) {
-						self.consoleError('Vue Component Calendar Error: maxDate parameter error, maxDate max\'s value is 48m');
+						self.logError('maxDate parameter error, maxDate max\'s value is 48m');
 					}
 					thisYear = thisYear + num;
 					thisMonth = thisMonth - 12 * num
@@ -193,14 +193,15 @@ module.exports = {
 					})
 				}
 			} else {
-				self.consoleError('Vue Component Calendar Error: maxDate parameter error')
+				self.logError('maxDate parameter error')
 			}
 			return all;
 
 		}
 
 	},
-	consoleError: function (msg) {
+	logError: function (msg) {
+		var msg = 'Vue Component Calendar Error: '+ msg;
 		window.console && console.error(msg);
 	},
 	/**
@@ -231,9 +232,16 @@ module.exports = {
 	 * @return {Number}      The value like this: 1454256000000
 	 */
 	formatDateConvert: function (date) {
+		var self = this;
 		if (date) {
+
 			var date = date.split('-');
-			return new Date(date[0] * 1, date[1] * 1 - 1, date[2] * 1).getTime(); //Compatible safari browser & webkit kernel.
+			var dateSec = new Date(date[0] * 1, date[1] * 1 - 1, date[2] * 1).getTime(); //Compatible safari browser & webkit kernel.
+			if(dateSec >= self.getTodaySec()){
+				return dateSec
+			}else{
+				self.logError('maybe your "startDate" is before today? please check the value with "startDate" or "endDate".');
+			}
 		} else {
 			return '';
 		}

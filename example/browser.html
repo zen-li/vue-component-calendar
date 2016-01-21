@@ -65,9 +65,7 @@
         var devicePixelRatio = window.devicePixelRatio;
         var dpr = 1;
         if (isIPhone) {
-            if (devicePixelRatio >= 3) {
-                dpr = 3;
-            } else if (devicePixelRatio >= 2) {
+            if (devicePixelRatio >= 2) {
                 dpr = 2;
             }
         }
@@ -91,8 +89,6 @@
         <calendar
             :show-calendar.sync="showCalendar"
             max-date="4m"
-            start-date="2016-01-21"
-            end-date="2016-01-25"
             :is-double-check.sync=true
             :is-vication.sync=true
             ></calendar>
