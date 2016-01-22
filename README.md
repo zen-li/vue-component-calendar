@@ -1,5 +1,7 @@
 # vue-component-calendar
 
+[![stable](http://badges.github.io/stability-badges/dist/stable.svg)](http://github.com/badges/stability-badges)
+
 [![Dependencies](https://img.shields.io/david/vuejs/vue-loader-example.svg?style=flat-square)](https://david-dm.org/vuejs/vue-loader-example)
 [![Dev Dependencies](https://img.shields.io/david/dev/vuejs/vue-loader-example.svg?style=flat-square)](https://david-dm.org/vuejs/vue-loader-example#info=devDependencies)
 
@@ -31,6 +33,45 @@ For detailed explanation on how things work, read the [docs for vue-laoder](http
 ```
 1rem = 100px(iPhone5)
 1rem = 117.18px(iPhone6)
+
+```
+
+### 使用：
+
+```
+<body>
+    <div class="content">
+        <button @click.prevent="showCalendar=true">唤醒日历</button>
+        <calendar
+            :show-calendar.sync="showCalendar"
+            max-date="4m"
+            start-date="2016-01-23"
+            end-date="2016-01-25"
+            :is-double-check.sync=true
+            :is-vication.sync=true></calendar>
+    </div>
+    <script type="text/javascript">
+        var ef = new Vue({
+            el: '.content',
+            data: {
+                showCalendar: true,
+                result: null
+            },
+            components: {
+                "calendar": vueComCalendar.calendar
+            },
+            events: {
+                confirm: function(result) {
+                    //do whatever you want.
+                    console.log(result)
+                },
+                cancle: function(result) {
+                    //do nothing
+                }
+            }
+        });
+    </script>
+</body>
 
 ```
 

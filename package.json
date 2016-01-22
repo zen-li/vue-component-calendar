@@ -1,6 +1,6 @@
 {
-  "name": "@hfe/vue-component-calendar",
-  "version": "1.0.0",
+  "name": "vue-component-calendar",
+  "version": "1.0.1",
   "description": "calendar base on vuejs",
   "main": "src/main",
   "scripts": {
@@ -10,7 +10,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "ssh://git@git.sankuai.com/h5/vue-dialog.git"
+    "url": "https://github.com/Real0n/vue-component-calendar"
   },
   "author": "maquan",
   "license": "MIT",
