@@ -192,7 +192,7 @@
                 },
                 renderUI: function() {
                     this.calScrollHeight();
-                    this.initScroll();
+                    // this.initScroll();
 
                     // panelEle = document.getElementById('scrollPanel');
                     // calPanelNum = document.getElementsByClassName('month-bar').length;
@@ -201,8 +201,8 @@
                     var panelState = self.panelState;
                     var doc = document;
                     var fixedBar = doc.getElementById('topHeight3');
-                    var pre = doc.getElementById('monthBar-' + (self.panelState));
-                    var next = doc.getElementById('monthBar-' + (self.panelState + 1));
+                    var pre = doc.getElementById('monthBar-' + (parseInt(self.panelState)));
+                    var next = doc.getElementById('monthBar-' + (self.panelState * 1 + 1));
                     var sp = doc.getElementById('scrollPanel');
                     var top = sp.scrollTop;
                     var top2 = next.offsetTop,
@@ -214,6 +214,8 @@
                     	click: true,
                     	probeType: 3
                     });
+                    var middleTop = '';
+                    var beforeFixedBarTop = utils.getElementPos('topHeight3').y;
                     myScroll.on('scroll', function (event) {
                     	// console.log(this.y)
                     	if (this.y > 0) {
@@ -221,12 +223,33 @@
                     	} else {
                     		pre.style.opacity = 1;
                     	}
-                        // var ds = Math.abs(this.pointY) - next.offsetTop - ele3 - ele1 - ele2;
-                        console.log(this.y)
-                        // console.log(next.offsetTop)
+                        var fixedbarTop = utils.getElementPos('topHeight3').y;
+                        var currentMonthBarTop = utils.getElementPos('monthBar-' + (self.panelState * 1 + 1)).y;
 
+                        if(currentMonthBarTop == (fixedbarTop + ele3)){
+                            middleTop = currentMonthBarTop;
+                        }
+                        if(currentMonthBarTop < (fixedbarTop + ele3)){
+                            fixedBar.style.transform = "translate(0, -"+ (middleTop - currentMonthBarTop) + 'px)' ;
+                        }
 
-                    })
+                        if(currentMonthBarTop <= beforeFixedBarTop){
+                            fixedBar.style.transform = "translate(0, 0)";
+                            self.panelState = Number(self.panelState) + 1;
+                            var content = doc.getElementById('monthBar-' + (self.panelState*1)).innerHTML;
+                            self.fixedMonthbar = content;
+                        }
+                        // console.log(currentMonthBarTop)
+                        // console.log(beforeFixedBarTop)
+                        // if(currentMonthBarTop > beforeFixedBarTop && self.panelState > 0){
+                        //     self.panelState = Number(self.panelState) - 1;
+                        //     fixedBar.style.transform = "translate(0, " + (middleTop - currentMonthBarTop) + 'px)' ;
+                        //     var content = doc.getElementById('monthBar-' + (self.panelState*1)).innerHTML;
+                        //     self.fixedMonthbar = content;
+                        // }
+
+                    });
+
                     document.addEventListener('touchmove', function (e) {
                     	e.preventDefault();
                     }, false);

@@ -34,5 +34,27 @@ For detailed explanation on how things work, read the [docs for vue-laoder](http
 
 ```
 
-##相关截图
+### API
 
+* `max-date="4m"`
+
+设置日历的最大展示日期，m代表月份，TODO：支持d
+
+* `start-date="2016-01-23"`
+
+设置日历默认选中的开始日期，此时默认是支持入住和离店 双选
+* `end-date="2016-01-25"`
+
+设置日历默认选中的离店日期
+
+* `:is-double-check.sync=true`
+
+日历是单选还是双选，文案不同，效果也不同
+
+* `:is-vication.sync=true`
+
+是否显示假期及假日
+
+
+##相关截图
+![./screenshot/demo.png](./screenshot/demo.png)
