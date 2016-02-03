@@ -1,5 +1,5 @@
 {
-  "name": "vue-component-calendar",
+  "name": "vue-component-datepicker",
   "version": "1.0.2",
   "description": "calendar base on vuejs",
   "main": "src/main",
