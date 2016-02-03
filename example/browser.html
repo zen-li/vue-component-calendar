@@ -28,6 +28,12 @@
             font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
         }
 
+        ul,
+        li {
+            padding: 0;
+            margin: 0;
+        }
+
         button {
             display: inline-block;
             padding: 6px 12px;
@@ -57,7 +63,7 @@
             margin: 20px;
         }
     </style>
-    <script type="text/javascript" src="http://awp-assets.meituan.net/assets/vue/1.0.12/vue.min.js"></script>
+    <script type="text/javascript" src="http://awp-assets.meituan.net/hfe/hfe-assets/vue/1.0.13/vue.js"></script>
     <script src="../build/build.js"></script>
     <script type="text/javascript">
         (function() {
@@ -89,8 +95,8 @@
         <calendar
             :show-calendar.sync="showCalendar"
             max-date="4m"
-            start-date="2016-01-23"
-            end-date="2016-01-25"
+            start-date="2016-02-23"
+            end-date="2016-02-25"
             :is-double-check.sync=true
             :is-vication.sync=true></calendar>
     </div>
@@ -98,18 +104,17 @@
         var ef = new Vue({
             el: '.content',
             data: {
-                showCalendar: true,
-                result: null
+                showCalendar: true
             },
             components: {
-                "calendar": vueComCalendar.calendar
+                "calendar": vueComCalendar
             },
             events: {
-                confirm: function(result) {
+                'vue-calendar-confirm': function(result) {
                     //do whatever you want.
                     console.log(result)
                 },
-                cancle: function(result) {
+                'vue-calendar-cancle': function(result) {
                     //do nothing
                 }
             }

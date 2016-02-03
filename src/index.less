@@ -1,11 +1,6 @@
 /*
  * base css
  */
-ul,
-li {
-    margin: 0;
-    padding: 0;
-}
 .vue-calendar-backdrop {
     position: absolute;
     width: 100%;
@@ -49,6 +44,10 @@ li {
     overflow: hidden;
     z-index: 1000;
     font-size: 0.3rem;
+    #scrollPanelWrapper{
+        position: relative;
+        top: 0;
+    }
     .vue-calendar-content-title-wrapper {
         background: #fff;
         z-index: 1003;
@@ -61,7 +60,7 @@ li {
             color: #666666;
             font-size: 0.32rem;
         }
-        .btn {
+        .vue-component-calendar-complete-button {
             float: right;
             margin-right: 0.2rem;
             a {
@@ -78,11 +77,13 @@ li {
         }
     }
     .month-bar-fixed {
+        overflow: visible;
         text-align: center;
         height: 0.6rem;
         line-height: 0.6rem;
         width: 100%;
-        position: relative;
+        position: fixed;;
+        top: 1.5rem;
         background: #fafafa;
         z-index: 1000;
 
@@ -123,7 +124,8 @@ li {
         overflow-scrolling: touch;
         overflow: auto;
         position: relative;
-        margin-top: -0.6rem;
+        -webkit-transform:translate3d(0,0,0);
+        // margin-top: -0.6rem;
         .month-bar {
             text-align: center;
             height: 0.6rem;
@@ -132,17 +134,20 @@ li {
             position: relative;
             background: #fafafa;
             &:before {
-                .one-px-line-top;
+                // .one-px-line-top;
             }
             &:after {
                 .one-px-line;
             }
         }
-        .first-month-bar {
-            position: fixed;
-            top: 1.5rem;
-            z-index: 100;
-        }
+        // .first-month-bar{
+        //     visibility: hidden;
+        // }
+        // .first-month-bar {
+        //     position: fixed;
+        //     top: 1.5rem;
+        //     z-index: 100;
+        // }
         .month-list {
             ul li {
                 list-style: none;
@@ -206,6 +211,34 @@ li {
                         }
                     }
                 }
+                &.is-work {
+                    .holiday {
+                        position: absolute;
+                        width: 100%;
+                        height: 100%;
+                        left: 0;
+                        bottom: 0;
+                        &:before {
+                            width: 0;
+                            height: 0;
+                            content: '';
+                            position: absolute;
+                            bottom: 0;
+                            right: 0;
+                            border-bottom: 0.35rem solid #fa967f;
+                            border-left: 0.35rem solid transparent;
+                        }
+                        &:after {
+                            content: '班';
+                            position: absolute;
+                            bottom: 0.02rem;
+                            right: 0.02rem;
+                            font-size: 0.16rem;
+                            color: #fff;
+                            line-height: 0.2rem;
+                        }
+                    }
+                }
                 &.border-radius {
                     border-radius: 0.06rem!important;
                 }
@@ -241,14 +274,33 @@ li {
                             text-align: center;
                             width: 100%;
                         }
+
                     }
+                    &-start.is-holiday ,&-end.is-holiday{
+                        .holiday{
+                            &:before{
+                                 width: 0;
+                            height: 0;
+                            content: '';
+                            position: absolute;
+                            bottom: 0;
+                            right: 0;
+                            border-bottom: 0.35rem solid #fff;
+                            border-left: 0.35rem solid transparent;
+                            }
+                            &:after{
+                                color: #fa967f;
+                            }
+                        }
+                    }
+
                     &-line {
                         background: #e0f4f2;
                         color: #333;
-                        border-top: 0.01rem solid #2eb6a8;
+                        // border-top: 0.01rem solid #2eb6a8;
                         height: 1rem!important;
                         line-height: 1rem!important;
-                        border-bottom: 0.01rem solid #2eb6a8;
+                        // border-bottom: 0.01rem solid #2eb6a8;
                         &:after {
                             .one-px-line;
                         }
